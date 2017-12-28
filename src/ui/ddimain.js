@@ -4,14 +4,14 @@
 var util = require('../util');
 var xUtil = require('../xutil');
 var textselector = require('./textselector');
-var crpgadder = require('./../mpPlugin/crosspageadder');
-var cancelcrpgadder = require('./../mpPlugin/cancelcrosspageadder');
-// mp
-var mpadder = require('./../mpPlugin/adder');
-var mphighlighter = require('./../mpPlugin/highlighter');
+var crpgadder = require('./../ddiPlugin/crosspageadder');
+var cancelcrpgadder = require('./../ddiPlugin/cancelcrosspageadder');
+// ddi
+var ddiadder = require('./../ddiPlugin/adder');
+var ddihighlighter = require('./../ddiPlugin/highlighter');
 var currhighlighter = require('./temphighlighter');
-var mpeditor = require('./../mpPlugin/editor');
-var mpviewer = require('./../mpPlugin/viewer');
+var ddieditor = require('./../ddiPlugin/editor');
+var ddiviewer = require('./../ddiPlugin/viewer');
 
 // highlight
 var hladder = require('./../drugPlugin/adder');
@@ -23,7 +23,7 @@ var _t = util.gettext;
 var rangeChildNodes = [];
 var hlAnnotation;  //a dummy annotation, used to store textSelected ranges
 var adderClick = false;  //to mark the adder is clicked, can be used to distinguish update annotation or add new data
-var publicsmp;
+var publicsddi;
 
 // trim strips whitespace from either end of a string.
 //
@@ -142,7 +142,7 @@ function addPermissionsCheckboxes(editor, ident, authz) {
             var u = ident.who();
             var input = field.find('input');
 
-            //alert('mp main - load - user ident:' + u)
+            //alert('ddi main - load - user ident:' + u)
 
             // Do not show field if no user is set
             if (typeof u === 'undefined' || u === null || u == "") {
@@ -220,7 +220,7 @@ function addPermissionsCheckboxes(editor, ident, authz) {
  */
 function main(options) {
 
-    console.log("[INFO] mpmain start()");
+    console.log("[INFO] ddimain start()");
 
     if (typeof options === 'undefined' || options === null) {
         options = {};
@@ -232,20 +232,19 @@ function main(options) {
 
     // Local helpers
     var makeHLAnnotation = annotationFactory(options.element, '.annotator-hl');
-    //var makeMPAnnotation = annotationFactory(options.element, '.annotator-mp');
+    //var makeDDIAnnotation = annotationFactory(options.element, '.annotator-ddi');
 
     // Object to hold local state
     var s = {
         interactionPoint: null
     };
-    if (publicsmp == null)
-        publicsmp = s;
+    publicsddi = s;
     function start(app) {
         var ident = app.registry.getUtility('identityPolicy');
         var authz = app.registry.getUtility('authorizationPolicy');
 
-        // mp adder
-        s.mpadder = new mpadder.mpAdder({
+        // ddi adder
+        s.ddiadder = new ddiadder.ddiAdder({
             onCreate: function (ann) {
                 app.annotations.create(ann);
                 adderClick = true;
@@ -254,7 +253,7 @@ function main(options) {
                 app.annotations.update(ann);
             }
         });
-        s.mpadder.attach();
+        s.ddiadder.attach();
 
         // highlight adder
         s.hladder = new hladder.Adder({
@@ -268,11 +267,11 @@ function main(options) {
         });
         s.hladder.attach();
 
-        // mp editor
-        s.mpeditor = new mpeditor.mpEditor({
+        // ddi editor
+        s.ddieditor = new ddieditor.ddiEditor({
             extensions: options.editorExtensions,
             onDelete: function (ann) {
-                if (ann.annotationType == "MP") {
+                if (ann.annotationType == "DDI") {
                     currAnnotation = ann;
                     if (currFormType == "claim") { 
                         // delete confirmation for claim
@@ -286,7 +285,7 @@ function main(options) {
                 }
             }
         });
-        s.mpeditor.attach();
+        s.ddieditor.attach();
 
         // highlight editor
         s.hleditor = new hleditor.Editor({
@@ -331,18 +330,18 @@ function main(options) {
         });
         s.cancelcrpgadder.attach();
         
-        addPermissionsCheckboxes(s.mpeditor, ident, authz);
+        addPermissionsCheckboxes(s.ddieditor, ident, authz);
         //addPermissionsCheckboxes(s.hleditor, ident, authz);
 
         //highlighter
         s.hlhighlighter = new hlhighlighter.Highlighter(options.element);
-        s.mphighlighter = new mphighlighter.mpHighlighter(options.element);
+        s.ddihighlighter = new ddihighlighter.ddiHighlighter(options.element);
         s.currhighlighter = new currhighlighter.currHighlighter(options.element);
 
         // select text, then load normed ranges to adder
         s.textselector = new textselector.TextSelector(options.element, {
             onSelection: function (ranges, event) {
-                //console.log("mpmain - textselector - onSelection");
+                //console.log("ddimain - textselector - onSelection");
 
                 //global variable: rangeChildNodes
                 rangeChildNodes = ranges.childNodes;
@@ -353,7 +352,7 @@ function main(options) {
                     hlAnnotation = makeHLAnnotation(ranges);
                     s.interactionPoint = util.mousePosition(event);
                     s.hladder.load(hlAnnotation, s.interactionPoint);
-                    s.mpadder.load(hlAnnotation, s.interactionPoint);
+                    s.ddiadder.load(hlAnnotation, s.interactionPoint);
                     if (sourceURL.match(/\.pdf/g)) {
                         s.crpgadder.load(hlAnnotation, s.interactionPoint);
                         if (currAnnotation != undefined && multiSelected) {
@@ -363,7 +362,7 @@ function main(options) {
                     //console.log(currAnnotation);
                 } else {
                     s.hladder.hide();
-                    s.mpadder.hide();
+                    s.ddiadder.hide();
                     s.crpgadder.hide();
                     if (currAnnotation == undefined || !multiSelected) {
                         s.cancelcrpgadder.hide();
@@ -372,16 +371,16 @@ function main(options) {
             }
         });
 
-        // mp viewer
-        s.mpviewer = new mpviewer.mpViewer({
+        // ddi viewer
+        s.ddiviewer = new ddiviewer.ddiViewer({
             onEdit: function (ann, field, dataNum) {
                 hlAnnotation = undefined; //clean cached textSelected ranges
                 // Copy the interaction point from the shown viewer:
-                s.interactionPoint = util.$(s.mpviewer.element)
+                s.interactionPoint = util.$(s.ddiviewer.element)
                     .css(['top', 'left']);
 
                 $("#annotator-delete").show();
-                if (ann.annotationType == "MP"){
+                if (ann.annotationType == "DDI"){
                     var annotationId = ann.id;
 
                     if (field == "claim") {
@@ -397,9 +396,7 @@ function main(options) {
                 }
             },
             onDelete: function (ann) {
-                if (ann.annotationType == "MP") {
-                    app.annotations['delete'](ann);
-                }
+                app.annotations['delete'](ann);
             },
             permitEdit: function (ann) {
                 return authz.permits('update', ann, ident.who());
@@ -410,7 +407,7 @@ function main(options) {
             autoViewHighlights: options.element,
             extensions: options.viewerExtensions
         });
-        s.mpviewer.attach();
+        s.ddiviewer.attach();
 
 
         // highlight viewer
@@ -424,9 +421,7 @@ function main(options) {
                 }
             },
             onDelete: function (ann) {
-                if (ann.annotationType == "DrugMention"){
-                    app.annotations['delete'](ann);
-                }
+                app.annotations['delete'](ann);
             },
             permitEdit: function (ann) {
                 return authz.permits('update', ann, ident.who());
@@ -452,10 +447,10 @@ function main(options) {
             s.hladder.destroy();
             s.textselector.destroy();
             s.hlviewer.destroy();
-            s.mpadder.destroy();
-            s.mpeditor.destroy();
-            s.mphighlighter.destroy();
-            s.mpviewer.destroy();
+            s.ddiadder.destroy();
+            s.ddieditor.destroy();
+            s.ddihighlighter.destroy();
+            s.ddiviewer.destroy();
             s.currhighlighter.destroy();
             removeDynamicStyle();
         },
@@ -520,11 +515,11 @@ function main(options) {
                 console.log("[num of annotations: " + annsByPage.length + "]");
                 //console.log(annsByPage);
                 s.hlhighlighter.drawAll(annsByPage, pageNumber);
-                s.mphighlighter.drawAll(annsByPage, pageNumber);
+                s.ddihighlighter.drawAll(annsByPage, pageNumber);
             } else {
                 //load one time
                 s.hlhighlighter.drawAll(anns);
-                s.mphighlighter.drawAll(anns);
+                s.ddihighlighter.drawAll(anns);
             }
         },
 
@@ -533,8 +528,6 @@ function main(options) {
             // completes, and rejected if editing is cancelled. We return it
             // here to "stall" the annotation process until the editing is
             // done.
-            //console.log("[mpmain--beforeAnnotationCreated]")
-            //s.mphighlighter.draw(annotation);//enhancement
 
 	    annotation.rawurl = options.source;
     	    annotation.uri = options.source.replace(/[\/\\\-\:\.]/g, "");
@@ -546,27 +539,27 @@ function main(options) {
             annotation.childNodes = rangeChildNodes; 
             // call different editor based on annotation type
             s.cancelcrpgadder.hide();
-            if (annotation.annotationType == "MP"){
+            if (annotation.annotationType == "DDI"){
                 s.currhighlighter.draw(annotation, "add");
                 adderClick = false;
                 hlAnnotation = undefined; //clean cached textSelected ranges
-                return s.mpeditor.load(s.interactionPoint,annotation);
+                return s.ddieditor.load(s.interactionPoint,annotation);
             } else if (annotation.annotationType == "DrugMention") {
                 // return s.hleditor.load(annotation, s.interactionPoint);
                 // not show editor when typed as Drug mention
                 //hlAnnotation = undefined; //clean cached textSelected ranges
                 return null;
             } else {
-                //return s.mpeditor.load(annotation, s.interactionPoint);
+                //return s.ddieditor.load(annotation, s.interactionPoint);
                 //hlAnnotation = undefined; //clean cached textSelected ranges
                 return null;
             }
         },
         annotationCreated: function (ann) {
-            if (ann.annotationType == "MP"){
-                console.log("mpmain - annotationCreated called!");
+            if (ann.annotationType == "DDI"){
+                console.log("ddimain - annotationCreated called!");
 
-                s.mphighlighter.draw(ann);
+                s.ddihighlighter.draw(ann);
                 currAnnotationId = ann.id;
 
                 // add current user to email list for import and update ann table
@@ -588,21 +581,21 @@ function main(options) {
             }
         },
         beforeAnnotationUpdated: function (annotation) {
-            // console.log(">>>>>>currAnnotationId<<<<<" + currAnnotationId);
+            console.log(">>>>>>currAnnotationId<<<<<" + currAnnotationId);
             currAnnotationId = annotation.id;
             currAnnotation = annotation;
 
-            if (annotation.annotationType == "MP"){
+            if (annotation.annotationType == "DDI"){
                 /*Parameters:
                     annotation: the original annotation, already existed one
                     hlAnnotation: a dummy annotation, used to store textSelected ranges
                 */
-                console.log("mpmain - beforeAnnotationUpdated");
+                console.log("ddimain - beforeAnnotationUpdated");
 
                 if ((sourceURL.indexOf(".pdf") != -1 && !adderClick) || hlAnnotation == undefined) {
                     //edit claim or data of current annotation
-                    //console.log("[test-annotation ] "+ multiSelected + adderClick + hlAnnotation);
-                    //console.log(currAnnotation);
+                    console.log("[test-annotation ] "+ multiSelected + adderClick + hlAnnotation);
+                    console.log(currAnnotation);
                     if (multiSelected) {
                         s.currhighlighter.draw(currAnnotation, "add");
                     } else {
@@ -610,15 +603,15 @@ function main(options) {
                     }
                 } else {
                     //add new data to current annotation
-                    //console.log("[test-hlAnnotation ] "+ multiSelected);
-                    //console.log(currAnnotation);
+                    console.log("[test-hlAnnotation ] "+ multiSelected);
+                    console.log(currAnnotation);
                     s.currhighlighter.draw(hlAnnotation, "add");
                 }
                 s.cancelcrpgadder.hide();
                 multiSelected = false; //TODO
                 adderClick = false;
                 hlAnnotation = undefined; //clean cached textSelected ranges
-                return s.mpeditor.load(s.interactionPoint,annotation);
+                return s.ddieditor.load(s.interactionPoint,annotation);
             } else {
                 //console.log(annotation);
                 //s.hlhighlighter.undraw(annotation);
@@ -627,9 +620,9 @@ function main(options) {
             }
         },
         annotationUpdated: function (ann) {
-            console.log("mpmain - annotationUpdated called");
-            if (ann.annotationType == "MP"){
-                s.mphighlighter.redraw(ann);
+            console.log("ddimain - annotationUpdated called");
+            if (ann.annotationType == "DDI"){
+                s.ddihighlighter.redraw(ann);
                 currAnnotationId = ann.id;
                 updateAnnTable(ann.rawurl);
            
@@ -640,16 +633,14 @@ function main(options) {
             }
         },
         beforeAnnotationDeleted: function (ann) {
-            console.log("[DEBUG] mpmain.js - beforeAnnotationDeleted called")
-            s.mphighlighter.undraw(ann);
+            s.ddihighlighter.undraw(ann);
             s.hlhighlighter.undraw(ann);            
         }
         ,
         annotationDeleted: function (ann) {
-            console.log("[DEBUG] mpmain - annotationDeleted called");
+            //console.log("ddimain - annotationDeleted called");
             showAnnTable();
             setTimeout(function(){
-                console.log("[DEBUG] mpmain - annotationDeleted - updateAnnTable");
                 updateAnnTable(options.source);
             },1000);
         }
@@ -671,7 +662,7 @@ $( "#claim-delete-confirm-btn" ).click(function() {
 
     app.annotations.delete(currAnnotation);
     showAnnTable();
-    //s.mphighlighter.undraw(currAnnotation);
+    //s.ddihighlighter.undraw(currAnnotation);
 
 });
 $( "#claim-delete-cancel-btn" ).click(function() {
@@ -719,14 +710,9 @@ $( "#data-delete-confirm-btn" ).click(function() {
         totalDataNum = totalDataNum -1;
     }
 
-// clean cached text selection
-// isTextSelected = false;
-// cachedOATarget = "";
-// cachedOARanges = "";
-
-    if (typeof publicsmp.mpeditor.dfd !== 'undefined' && publicsmp.mpeditor.dfd !== null) {
-        publicsmp.mpeditor.dfd.resolve();
-    }
+    if (typeof publicsddi.ddieditor.dfd !== 'undefined' && publicsddi.ddieditor.dfd !== null) {
+     publicsddi.ddieditor.dfd.resolve();
+     }
     showAnnTable();
 });
 
@@ -750,8 +736,8 @@ $( "#dips-delete-confirm-btn" ).click(function() {
         totalDataNum = totalDataNum -1;
     }
 
-    if (typeof publicsmp.mpeditor.dfd !== 'undefined' && publicsmp.mpeditor.dfd !== null) {
-        publicsmp.mpeditor.dfd.resolve();
+    if (typeof publicsddi.ddieditor.dfd !== 'undefined' && publicsddi.ddieditor.dfd !== null) {
+        publicsddi.ddieditor.dfd.resolve();
     }
     showAnnTable();
 });

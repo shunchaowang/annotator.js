@@ -4,7 +4,6 @@ var util = require('../util');
 var Template = require('./template').Template;
 var $ = util.$;
 var Range = require('xpath-range').Range;
-
 var _t = util.gettext;
 var Promise = util.Promise;
 var NS = "annotator-editor";
@@ -52,7 +51,6 @@ var mpEditor = exports.mpEditor = Widget.extend({
 
             this.addField({
                 load: function (field, annotation, annotations) {               
-                    console.log(">>>>>>>load editor<<<<<<<");
 
                     var claim = annotation.argues;
 
@@ -1326,12 +1324,14 @@ var mpEditor = exports.mpEditor = Widget.extend({
     // if claim form, delete claim and data
     _onDeleteClick: function (event) {
 
-        console.log("mpeditor - _onDeleteClick:")
-        console.log(this.annotation);
-
-        preventEventDefault(event);
-        this.options.onDelete(this.annotation);
-        undrawCurrhighlighter();
+        console.log("mpeditor - _onDeleteClick");
+        
+        if (this.annotation.annotationType == "MP") {
+            console.log(this.annotation);
+            preventEventDefault(event);
+            this.options.onDelete(this.annotation);
+            undrawCurrhighlighter();
+        }
 
         // reset unsave status
         unsaved = false;
