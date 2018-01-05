@@ -8,7 +8,6 @@ var $ = require('jquery');
 
 // JSON fields configuration
 // Claim form
-
 var context1 = {
     
 
@@ -360,16 +359,16 @@ Handlebars.registerHelper('buildFormClaim', function(items, options) {
 
         if (items[i].name == "Drug1: ") {
 
-        	out = out + "<select style='width:140px;height:90px;' id='" + items[i].id + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            out = out + "<select style='width:140px;height:90px;' id='" + items[i].id + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 
         } else if (items[i].name == "Drug2: ") {
 
-        	out = out + "<select style='width:140px;height:90px;' id='" + items[i].id + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        	
+            out = out + "<select style='width:140px;height:90px;' id='" + items[i].id + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            
         } else {
 
-        	out = out + "<select style='width:120px;height:40px;' id='" + items[i].id + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            out = out + "<select style='width:120px;height:40px;' id='" + items[i].id + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
         }
 
 
@@ -421,28 +420,28 @@ Handlebars.registerHelper('buildFormData', function(items, options) {
         }
         else {
 
-        	if(((i)%5==0))
+            if(((i)%5==0))
 
-        		out = out + "</br></br>";
+                out = out + "</br></br>";
 
             if (items[i].type == "input") {
 
-            	out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
-            	out += "<input style='width:60px; height:20px;' type='text' id='"+items[i].id+"'>";
+                out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                out += "<input style='width:60px; height:20px;' type='text' id='"+items[i].id+"'>";
             }
 
             else if (items[i].type=="dropdown") {
 
-            	out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
 
-            	out = out + "<select id='" + items[i].id + "'>";
+                out = out + "<select id='" + items[i].id + "'>";
 
 
-            	for(var j = 0, sl = items[i].options.length; j<sl; j++) {
+                for(var j = 0, sl = items[i].options.length; j<sl; j++) {
 
-            		if(items[i].optionsID.length==0)
+                    if(items[i].optionsID.length==0)
 
-            			out = out + "<option value='" + items[i].options[j] + "'>" + items[i].options[j] + "</option>";
+                        out = out + "<option value='" + items[i].options[j] + "'>" + items[i].options[j] + "</option>";
 
                 else
 
@@ -562,47 +561,47 @@ Handlebars.registerHelper('buildFormParticipantsData', function(items, options) 
 
 function addRow() {
 
-	var table = document.getElementById("toxicity-tab");
-	var rowCount = table.rows.length;
-	var row = table.insertRow(rowCount);
+    var table = document.getElementById("toxicity-tab");
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
 
 
-	var cell1 = row.insertCell(0);
-	cell1.style = "border: 1px solid black";
-	var element1 = document.createElement("input");
-	element1.type = "text";
-	element1.id = "toxicity";
-	cell1.appendChild(element1);
+    var cell1 = row.insertCell(0);
+    cell1.style = "border: 1px solid black";
+    var element1 = document.createElement("input");
+    element1.type = "text";
+    element1.id = "toxicity";
+    cell1.appendChild(element1);
 
-	var cell2 = row.insertCell(1);
-	cell2.style = "border: 1px solid black";
-	cell2.width = "250";
-	var element2 = document.createElement("input");
-	element2.type = "text";
-	element2.id = "grade";
-	element2.style = "width:250px";
-	cell2.appendChild(element2);
+    var cell2 = row.insertCell(1);
+    cell2.style = "border: 1px solid black";
+    cell2.width = "250";
+    var element2 = document.createElement("input");
+    element2.type = "text";
+    element2.id = "grade";
+    element2.style = "width:250px";
+    cell2.appendChild(element2);
 
-	var cell3 = row.insertCell(2);
-	cell3.style = "border: 1px solid black";
-	var element3 = document.createElement("input");
-	element3.type = "text";
-	element3.id = "frequency";
-	cell3.appendChild(element3);
+    var cell3 = row.insertCell(2);
+    cell3.style = "border: 1px solid black";
+    var element3 = document.createElement("input");
+    element3.type = "text";
+    element3.id = "frequency";
+    cell3.appendChild(element3);
 
-	var cell4 = row.insertCell(3);
-	cell4.style = "border: 1px solid black";
-	var element4 = document.createElement("input");
-	element4.type = "text";
-	element4.id = "death";
-	cell4.appendChild(element4);
+    var cell4 = row.insertCell(3);
+    cell4.style = "border: 1px solid black";
+    var element4 = document.createElement("input");
+    element4.type = "text";
+    element4.id = "death";
+    cell4.appendChild(element4);
 
-	var cell5 = row.insertCell(4);
-	cell5.style = "border: 1px solid black";
-	var element5 = document.createElement("input");
-	element5.type = "text";
-	element5.id = "withdrawal";
-	cell5.appendChild(element5);
+    var cell5 = row.insertCell(4);
+    cell5.style = "border: 1px solid black";
+    var element5 = document.createElement("input");
+    element5.type = "text";
+    element5.id = "withdrawal";
+    cell5.appendChild(element5);
 };
 
 
@@ -659,13 +658,13 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
 
                         if (items[i].input == "text") {
 
-                        	if (items[i].id != "grade") {
+                            if (items[i].id != "grade") {
 
-                        		out += "<td style = 'border: 1px solid black;'><input type='text' id='"+items[i].id+"'>" + "</td>";
-                        	} else if (items[i].id == "grade") {
+                                out += "<td style = 'border: 1px solid black;'><input type='text' id='"+items[i].id+"'>" + "</td>";
+                            } else if (items[i].id == "grade") {
 
-                        		out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='"+items[i].id+"'>" + "</td>";
-                        	}
+                                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='"+items[i].id+"'>" + "</td>";
+                            }
 
                           
 
@@ -747,7 +746,7 @@ Template.content = [
     '<div id="claim-label-data-editor" style="display: none;"></div>',
 
     // links 
-    '<div id="dt-data-nav" style="display: none;">',
+    '<div id="mp-data-nav" style="display: none;">',
     //'<button id="nav-evRelationship-btn" type="button" onclick="switchDataForm(\'evRelationship\')" >Ev relationship</button> &nbsp;->&nbsp;',
     '<button id="nav-participants-btn" type="button" onclick="switchDataForm(\'participants\')" >Participants</button> &nbsp;&nbsp;->&nbsp;&nbsp;',
     '<button id="nav-dose1-btn" type="button" onclick="switchDataForm(\'dose1\')" >Dose 1 </button> &nbsp;&nbsp;->&nbsp;&nbsp;',
@@ -758,37 +757,37 @@ Template.content = [
     '</div>',
 
     // Claim form
-    '<div id="dt-claim-form" style="display: none;">',
+    '<div id="mp-claim-form" style="display: none;">',
     form1,
     '</div>',
     
     // Data & material - Num of Participants
-    '<div id="dt-data-form-participants" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
+    '<div id="mp-data-form-participants" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
     form2,
     '</div>',
 
     // Data & material - Drug1 Dosage
-    '<div id="dt-data-form-dose1" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
+    '<div id="mp-data-form-dose1" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
     form3,
     '</div>',
 
     // Data & material - Drug2 Dosage
-    '<div id="dt-data-form-dose2" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
+    '<div id="mp-data-form-dose2" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
     form4,
     '</div>',
 
     // Data & material - Radiotherapy
-    '<div id="dt-data-form-radiotherpay" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
+    '<div id="mp-data-form-radiotherpay" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
     form5,
     '</div>',
 
     // Data & material - Toxicity
-    '<div id="dt-data-form-toxicity" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
+    '<div id="mp-data-form-toxicity" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
     form6,
     '</div>',
 
     // Data & material - Death/Withdrawal
-    '<div id="dt-data-form-death/withdrawal" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
+    '<div id="mp-data-form-death/withdrawal" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
     form7,
     '</div>',
 
@@ -812,16 +811,3 @@ Template.content = [
 
 Template.extend = extend;
 exports.Template = Template;
-
-    
-
-
-
-
-
-
-
-
-
-
-
