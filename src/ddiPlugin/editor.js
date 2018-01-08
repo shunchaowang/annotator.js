@@ -564,7 +564,7 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
             // submit data form
                     } else if (currFormType != "claim" && currAnnotationId != null) { 
                         if (annotation.argues.supportsBy.length == 0) {
-                            var data = {type : "mp:data", toxicity : {}, death : {}, radiotherapy : {},  supportsBy : {type : "mp:method", supportsBy : {type : "mp:material", participants : {}, drug1Dose : {}, drug2Dose: {}}}};
+                            var data = {type : "mp:data", toxicity : {}, deathwithdrawal : {}, radiotherapy : {},  supportsBy : {type : "mp:method", supportsBy : {type : "mp:material", participants : {}, drug1Dose : {}, drug2Dose: {}}}};
                             annotation.argues.supportsBy.push(data);
                         }
 
@@ -577,24 +577,24 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
 
                         // MP add data-method-material 
                         var partTmp = mpData.supportsBy.supportsBy.participants;
-                        var partN = $('#participants').val().trim();
+                        var partN = $('#participants').val();
                         var partTotal = $('#participantsTotal').val();
                         var partM = $('#participantsMale').val();
-                        var partF = $('#participantsFemale')
+                        var partF = $('#participantsFemale').val();
                         var partRace = $('#participantsRace').val();
-                        var partM = $('#participantsMedianAge').val();
+                        var partMA = $('#participantsMedianAge').val();
                         var partT = $('#participantsTumorType').text();
                         var partC = $('#participantsCancerStage').text();
 
-                        if ((partN != "") && (partTotal != "") && (partM/F != "") && (partRace != "") && (partM != "") && (partT != "") && (partC != "")) {
+                        if ((partN != "") && (partTotal != "") && (partM != "") && (partF != "") && (partRace != "") && (partMA != "") && (partT != "") && (partC != "")) {
 
 
                             partTmp.value = partN;
                             partTmp.total = partTotal;
                             partTmp.male = partM;
-                            partTmp.female = partF
+                            partTmp.female = partF;
                             partTmp.race = partRace;
-                            partTmp.medianAge = partM;
+                            partTmp.medianAge = partMA;
                             partTmp.tumorType = partT;
                             partTmp.cancerStage = partC;
 
@@ -658,16 +658,22 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                         }
 
                         // radiotherapy
-                        
-                        mpData.radiotherapy = $("#radiotherapy option:selected").text();
-                        if (mpData.radiotherapy.ranges == null) {
+
+                        var radiotherapyR = $("#radiotherapy option:selected").text();
+
+                        if (radiotherapyR != "") {
+
+                            mpData.radiotherapy.r = radiotherapyR;
+
+                            if (mpData.radiotherapy.ranges == null) {
                                 mpData.radiotherapy.ranges = cachedOARanges;
                             }
                             if (mpData.radiotherapy.hasTarget == null) {
                                 mpData.radiotherapy.hasTarget = cachedOATarget;
-                            } else {
+                            }
+                        } else {
                             console.log("[WARNING] radiotherapy required fields not filled!");
-                        }         
+                        }
 
 
                         // mpData toxicity 
@@ -676,9 +682,9 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                         var toxicityCriteria = $('#toxicityCriteria').text();
                         var toxicityToxicity = $('#toxicity').text();
                         var toxicityGrade = $('#grade').text();
-                        var toxicityFrequency = $('#frequency').val().trim();
-                        var toxicityDeath = $('#death').val().trim();
-                        var toxicityWithdrawal = $('#withdrawal').val().trim();
+                        var toxicityFrequency = $('#frequency').val();
+                        var toxicityDeath = $('#death').val();
+                        var toxicityWithdrawal = $('#withdrawal').val();
 
                         if (toxicityCriteria != "" && toxicityToxicity != "" && toxicityGrade != "" && toxicityFrequency != "" && toxicityDeath != "" && toxicityWithdrawal != "") {
 
@@ -701,21 +707,21 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                         }                        
 
 
+                        //mpData death/withrawal
                         
-                        
-                        var deathDeathFrequency = $('#deathFrequency').val().trim();
-                        var deathWithdrawalFrequency = $('#withdrawalFrequency').val().trim();
+                        var deathwithdrawalDeathFrequency = $('#deathFrequency').val();
+                        var deathwithdrawalWithdrawalFrequency = $('#withdrawalFrequency').val();
 
-                        if (deathDeathFrequency != "" && deathWithdrawalFrequency != "") {
+                        if (deathwithdrawalDeathFrequency != "" && deathwithdrawalWithdrawalFrequency != "") {
 
-                            mpData.death.deathFrequency = deathDeathFrequency;
-                            mpData.death.withdrawalFrequency = deathWithdrawalFrequency;
+                            mpData.deathwithdrawal.deathFrequency = deathwithdrawalDeathFrequency;
+                            mpData.deathwithdrawal.withdrawalFrequency = deathwithdrawalWithdrawalFrequency;
 
-                            if (mpData.death.ranges == null) {
-                                mpData.death.ranges = cachedOARanges;
+                            if (mpData.deathwithdrawal.ranges == null) {
+                                mpData.deathwithdrawal.ranges = cachedOARanges;
                             }
-                            if (mpData.death.hasTarget == null) {
-                                mpData.death.hasTarget = cachedOATarget;
+                            if (mpData.deathwithdrawal.hasTarget == null) {
+                                mpData.deathwithdrawal.hasTarget = cachedOATarget;
                             }                           
                         } else {
                             console.log("[WARNING] death/withdrawal required fields not filled!");
@@ -1660,7 +1666,136 @@ function loadExperimentFromAnnotation(loadData, relationship) {
 }
 
 // load one data item from mp annotation
+
 function loadDataItemFromAnnotation(loadData, allHighlightedDrug) {
+
+    // load mp material field  
+    $("#participants").val(loadData.supportsBy.supportsBy.participants.value);
+    $('#participantsTotal').val(loadData.supportsBy.supportsBy.participants.total);
+    $('#participantsMale').val(loadData.supportsBy.supportsBy.participants.M);
+    $('#participantsFemale').val(loadData.supportsBy.supportsBy.participants.F);
+    $('#participantsRace').val(loadData.supportsBy.supportsBy.participants.race);
+    $('#participantsMedianAge').val(loadData.supportsBy.supportsBy.participants.medianAge);
+    $('#participantsTumorType').text(loadData.supportsBy.supportsBy.participants.tumorType);
+    $('#participantsCancerStage').text(loadData.supportsBy.supportsBy.participants.cancerStage);
+     
+    if (loadData.supportsBy.supportsBy.participants.hasTarget != null) {
+        $('#participantsquote').html(loadData.supportsBy.supportsBy.participants.hasTarget.hasSelector.exact || '');
+    } else {
+        if (cachedOATarget.hasSelector != null)
+            $('#participantsquote').html(cachedOATarget.hasSelector.exact || '');          
+        else 
+            $('#participantsquote').html('');         
+    }
+
+    $("#drug1Dose").val(loadData.supportsBy.supportsBy.drug1Dose.value);
+    $("#drug1Duration").val(loadData.supportsBy.supportsBy.drug1Dose.duration);
+    $("#drug1Formulation > option").each(function () {
+        if (this.value === loadData.supportsBy.supportsBy.drug1Dose.formulation) {
+            $(this).prop('selected', true);                                       
+        }
+    });
+
+    $("#drug1Regimens > option").each(function () {
+        if (this.value === loadData.supportsBy.supportsBy.drug1Dose.regimens) {
+            $(this).prop('selected', true);                                                  
+        }
+    });
+
+    $("#drug1ToleratedDose").val(loadData.supportsBy.supportsBy.drug1Dose.toleratedDose);
+
+    if (loadData.supportsBy.supportsBy.drug1Dose.hasTarget != null) {
+        $('#dose1quote').html(loadData.supportsBy.supportsBy.drug1Dose.hasTarget.hasSelector.exact || '');       
+    } 
+    else {
+        if (cachedOATarget.hasSelector != null)
+            $('#dose1quote').html(cachedOATarget.hasSelector.exact || '');       
+        else
+            $('#dose1quote').html('');
+    }
+    //data - dose2
+    $("#drug2Dose").val(loadData.supportsBy.supportsBy.drug2Dose.value);
+    $("#drug2Duration").val(loadData.supportsBy.supportsBy.drug2Dose.duration);
+    $("#drug2Formulation > option").each(function () {
+        if (this.value === loadData.supportsBy.supportsBy.drug2Dose.formulation) {
+            $(this).prop('selected', true);                                                  
+        }
+    });
+
+    $("#drug2Regimens > option").each(function () {
+        if (this.value === loadData.supportsBy.supportsBy.drug2Dose.regimens) {
+            $(this).prop('selected', true);                                                  
+        }
+    });
+    
+    $("#drug2ToleratedDose").val(loadData.supportsBy.supportsBy.drug2Dose.toleratedDose);
+
+    if (loadData.supportsBy.supportsBy.drug2Dose.hasTarget != null) {
+        
+        $('#dose2quote').html(loadData.supportsBy.supportsBy.drug2Dose.hasTarget.hasSelector.exact || '');     
+    } 
+    else {
+        
+        if (cachedOATarget.hasSelector != null)
+            $('#dose2quote').html(cachedOATarget.hasSelector.exact || '');       
+        else 
+            $('#dose2quote').html('');                      
+    }  
+
+
+    // load mp data fields
+
+    // radiotherapy
+    $("#radiotherapy > option").each(function () {
+            if (this.value === loadData.radiotherapy.Radiotherapy) {
+                $(this).prop('selected', true);                                                  
+            }
+        });
+    if (loadData.radiotherapy.hasTarget != null) {
+        
+        $('#radiotherapyquote').html(loadData.radiotherapy.hasTarget.hasSelector.exact || ''); 
+    } 
+    else {
+        
+        if (cachedOATarget.hasSelector != null)
+            $('#radiotherapyquote').html(cachedOATarget.hasSelector.exact || '');       
+        else 
+            $('#radiotherapyquote').html('');                        
+    }      
+
+    // load toxicity Data
+
+    $('#toxicityCriteria').text(loadData.toxicity.toxicityCriteria);
+    $('#toxicity').text(loadData.toxicity.Toxicity);
+    $('#grade').text(loadData.toxicity.grade);
+    $('#frequency').val(loadData.toxicity.frequency);
+    $('#death').val(loadData.toxicity.death);
+    $('#withdrawal').val(loadData.toxicity.withdrawal);
+
+    if (loadData.toxicity.hasTarget != null) {
+        $('#toxicityquote').html(loadData.toxicity.hasTarget.hasSelector.exact || ''); 
+    } else {
+        if (cachedOATarget.hasSelector != null)
+            $('#toxicityquote').html(cachedOATarget.hasSelector.exact || '');       
+        else
+            $('#toxicityquote').html('');              
+    }                 
+
+    // load Death/Withdrawal frequency 
+    $("#deathFrequency").val(loadData.deathwithdrawal.deathFrequency);
+    $("#withdrawalFrequency").val(loadData.deathwithdrawal.withdrawalFrequency);
+    
+    if (loadData.deathwithdrawal.hasTarget != null) {
+        $('#deathwithdrawalquote').html(loadData.deathwithdrawal.hasTarget.hasSelector.exact || ''); 
+    }
+    else {
+        if (cachedOATarget.hasSelector != null)
+            $('#deathwithdrawalquote').html(cachedOATarget.hasSelector.exact || '');       
+        else
+            $('#deathwithdrawalquote').html('');              
+    }                       
+}
+/*function loadDataItemFromAnnotation(loadData, allHighlightedDrug) {
 
     // load mp material field  
     $("#participants").val(loadData.supportsBy.supportsBy.participants.value);  
@@ -1909,7 +2044,7 @@ function loadDataItemFromAnnotation(loadData, allHighlightedDrug) {
         else
             $('#halflifequote').html('');              
     }                            
-}
+}*/
 
 function showSaveButton(field) {
     $(".annotator-save").hide();
@@ -1923,7 +2058,7 @@ function showSaveButton(field) {
     2.show delete button if there are value been load. 
     3.hide nav list for ev relationship and study type data form)
 **/
-function postDataForm(targetField) {
+/*function postDataForm(targetField) {
 
     console.log("ddieditor - postDataForm: " + targetField);
     $("#mp-claim-form").hide();
@@ -1962,6 +2097,45 @@ function postDataForm(targetField) {
             }  else if (field == "phenotype"){ // when field is text input
                 $("#mp-data-nav").show();
                 fieldVal = $("#" + fieldM[field] + "Genre").val();
+            }  else { // when field is text input
+                $("#mp-data-nav").show();
+                fieldVal = $("#" + fieldM[field]).val();
+            }
+                
+            if (fieldVal !=null && fieldVal != "")
+                $("#annotator-delete").show();
+            else if (showDeleteBtn)
+                $("#annotator-delete").show();
+            else 
+                $("#annotator-delete").hide();
+            focusOnDataField(targetField);
+        }                        
+        else {
+            cleanFocusOnDataField(field);
+            $("#"+dataid).hide();
+        }
+    }
+}*/
+
+function postDataForm(targetField) {
+
+    console.log("mpeditor - postDataForm: " + targetField);
+    $("#mp-claim-form").hide();
+
+    // field name and actual div id mapping
+    var fieldM = {"participants":"participants", "dose1":"drug1Dose", "dose2":"drug2Dose", "radiotherapy":"radiotherapy", "toxicity":"toxicity", "deathwithdrawal":"deathwithdrawal"};
+    var showDeleteBtn = false;
+
+    for (var field in fieldM) {       
+        var dataid = "mp-data-form-"+field;
+        var fieldVal = "";
+        if (field === targetField) {
+            $("#"+dataid).show();  // show specific data form 
+            // inspect that is target form has value filled 
+
+            if (field == "radiotherapy" || field =="toxicity" || field == "deathwithdrawal") { 
+                $("#mp-data-nav").show();                 
+                fieldVal = $("#" + fieldM[field]).val();
             }  else { // when field is text input
                 $("#mp-data-nav").show();
                 fieldVal = $("#" + fieldM[field]).val();
@@ -2088,7 +2262,6 @@ function cleanDataForm() {
     $('#frequency').val('');
     $('#death').val('');
     $('#withdrawal').val('');
-
     
 
     $('#deathFrequency').val('');

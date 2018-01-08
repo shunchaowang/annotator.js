@@ -60,7 +60,7 @@ var context2 = {
   {
     type:"quote",
     name:"Quote: ",
-    id:"participantsQuote",
+    id:"participantsquote",
     options:[],
     optionsID:[]
   },
@@ -211,7 +211,7 @@ var context5 = {
         {
             type:"quote",
             name:"Quote: ",
-            id:"radiotherapyQuote",
+            id:"radiotherapyquote",
             options:[],
             optionsID:[]
         },
@@ -234,7 +234,7 @@ var context6 = {
     {
         type: "quote",
         name: "Qoute: ",
-        id: "toxicityQuote",
+        id: "toxicityquote",
         options:[],
         optionsID:[]
     },
@@ -323,7 +323,7 @@ var context7 = {
         {
             type:"quote",
             name:"Quote: ",
-            id:"death/withdrawalQuote",
+            id:"deathwithdrawalquote",
             options:[],
             optionsID:[]
         },
@@ -471,15 +471,91 @@ Handlebars.registerHelper('buildFormData', function(items, options) {
 
 //Participants template
 
-
 Handlebars.registerHelper('buildFormParticipantsData', function(items, options) {
+    var out = "";
+    for(var i=0, l=items.length; i<l; i++) {
+        if (items[i].type == "quote") {
+            out += "<div id='" + items[i].id + "' class='dataquoteborder'></div>";
+        } else {
+
+            if (items[i].type == "input") {
+
+                if (((i)%4==0))
+                out = out + "</br>";
+
+                if (items[i].name == "Number of Participants: ") {
+
+                    out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                    out += "<input style='width:50px; height:20px;' type='text' id='"+items[i].id+"'>";
+
+                } 
+
+                else if (items[i].name == "Total/Course/Cycle No: ") {
+
+                    out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                    out += "<input style='width:50px; height:20px;' type='text' id='"+items[i].id+"'>";
+                }
+
+                else if (items[i].name == "Male/Female: ") {
+
+                    out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                    out += "<input style='width:50px; height:20px;' type='text' id='participantsMale'>" + " / " + "<input style='width:50px; height:20px;' type='text' id='participantsFemale'>";
+                }
+
+                if (((i+1)%4==0))
+                    out = out + "</br></br>";
+
+                if (((i)%7==0))
+                    out = out + "</br>";
+
+                if (items[i].name == "Race: ") {
+
+                    out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                    out += "<input style='width:80px; height:20px;' type='text' id='"+items[i].id+"'>";
+
+                } 
+
+                else if (items[i].name == "Median Age: ") {
+
+                    out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                    out += "<input style='width:50px; height:20px;' type='text' id='"+items[i].id+"'>";
+                }
+
+                if (((i+1)%7==0))
+                    out = out + "</br>";
+
+                if (((i)%10==0))
+                    out = out + "</br>";
+                
+                if (items[i].name == "Tumor Type: ") {
+
+                    out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                    out += "<input style='width:80px; height:20px;' type='text' id='"+items[i].id+"'>";
+                }
+
+                if (items[i].name == "Cancer Stage: ") {
+
+                    out += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                    out += "<input style='width:80px; height:20px;' type='text' id='"+items[i].id+"'>";
+                }
+
+
+            }
+
+        }
+    }
+    return out;
+});
+
+
+/*Handlebars.registerHelper('buildFormParticipantsData', function(items, options) {
     var out = "";
     for(var i=0, l=items.length; i<l; i++) {
         if (items[i].type == "quote") {
             out += "<div id='" + items[i].id + "' class='dataquoteborder'></div>";
         }
 
-        out += "<table id ='participants-tab'>";
+        out += "<table id ='participants-tab' border-collapse: collapse>";
 
         for (var i = 1, l=items.length; i<l; i++) {
 
@@ -554,7 +630,7 @@ Handlebars.registerHelper('buildFormParticipantsData', function(items, options) 
 
 });
 
-
+*/
 
 // Drug Toxicity template.
 
@@ -625,7 +701,7 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
 
             else if (items[i].type == "button") {
               
-              out += "<button onclick='addRow();' style='float: right; width:80px; height:30px;' id= "+ items[i].id + ">" + items[i].name + "</button> </br> </br> </br>";
+              out += "<button onclick='addRow();' style='float: right; width:80px; height:30px;' id= "+ items[i].id + ">" + items[i].name + "</button> </br>";
 
               
             }
@@ -748,12 +824,12 @@ Template.content = [
     // links 
     '<div id="mp-data-nav" style="display: none;">',
     //'<button id="nav-evRelationship-btn" type="button" onclick="switchDataForm(\'evRelationship\')" >Ev relationship</button> &nbsp;->&nbsp;',
-    '<button id="nav-participants-btn" type="button" onclick="switchDataForm(\'participants\')" >Participants</button> &nbsp;&nbsp;->&nbsp;&nbsp;',
-    '<button id="nav-dose1-btn" type="button" onclick="switchDataForm(\'dose1\')" >Dose 1 </button> &nbsp;&nbsp;->&nbsp;&nbsp;',
-    '<button id="nav-dose2-btn" type="button" onclick="switchDataForm(\'dose2\')" >Dose 2 </button>&nbsp;&nbsp;->&nbsp;&nbsp;',
-    '<button id="nav-radiotherapy-btn" type="button" onclick="switchDataForm(\'radiotherapy\')" >Radiotherapy</button>&nbsp;&nbsp;->&nbsp;&nbsp;',
-    '<button id="nav-toxicity-btn" type="button" onclick="switchDataForm(\'toxicity\')" >Toxicity</button> &nbsp;&nbsp;->&nbsp;&nbsp;',
-    '<button id="nav-death/withdrawal-btn" type="button" onclick="switchDataForm(\'death/withdrawal\')" >Death/Withdrawal</button> &nbsp;&nbsp;->&nbsp;&nbsp;',
+    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="nav-participants-btn" type="button" onclick="switchDataForm(\'participants\')" >Participants</button> &nbsp;&nbsp;&nbsp;&nbsp;->&nbsp;&nbsp;&nbsp;&nbsp;',
+    '<button id="nav-dose1-btn" type="button" onclick="switchDataForm(\'dose1\')" >Dose 1 </button> &nbsp;&nbsp;&nbsp;&nbsp;->&nbsp;&nbsp;&nbsp;&nbsp;',
+    '<button id="nav-dose2-btn" type="button" onclick="switchDataForm(\'dose2\')" >Dose 2 </button>&nbsp;&nbsp;&nbsp;&nbsp;->&nbsp;&nbsp;&nbsp;&nbsp;',
+    '<button id="nav-radiotherapy-btn" type="button" onclick="switchDataForm(\'radiotherapy\')" >Radiotherapy</button>&nbsp;&nbsp;&nbsp;&nbsp;->&nbsp;&nbsp;&nbsp;&nbsp;',
+    '<button id="nav-toxicity-btn" type="button" onclick="switchDataForm(\'toxicity\')" >Toxicity</button> &nbsp;&nbsp;&nbsp;&nbsp;->&nbsp;&nbsp;&nbsp;&nbsp;',
+    '<button id="nav-deathwithdrawal-btn" type="button" onclick="switchDataForm(\'deathwithdrawal\')" >Death/Withdrawal</button>',
     '</div>',
 
     // Claim form
@@ -777,7 +853,7 @@ Template.content = [
     '</div>',
 
     // Data & material - Radiotherapy
-    '<div id="mp-data-form-radiotherpay" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
+    '<div id="mp-data-form-radiotherapy" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
     form5,
     '</div>',
 
@@ -787,7 +863,7 @@ Template.content = [
     '</div>',
 
     // Data & material - Death/Withdrawal
-    '<div id="mp-data-form-death/withdrawal" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
+    '<div id="mp-data-form-deathwithdrawal" style="margin-top:7px;margin-buttom:7px;margin-left:25px;display: none;">',
     form7,
     '</div>',
 
