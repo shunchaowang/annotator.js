@@ -243,11 +243,11 @@ var context6 = {
         name: "Toxicity criteria: ",
         id: "toxicityCriteria"
     },
-    {
+    /*{
         type: "button",
         name: "add",
         id: "toxicityTable"
-    },
+    },*/
     {
         type:"theader",
         name:"Toxicity",
@@ -635,7 +635,7 @@ Handlebars.registerHelper('buildFormParticipantsData', function(items, options) 
 // Drug Toxicity template.
 
 
-function addRow() {
+/*function addRow() {
 
     var table = document.getElementById("toxicity-tab");
     var rowCount = table.rows.length;
@@ -646,7 +646,7 @@ function addRow() {
     cell1.style = "border: 1px solid black";
     var element1 = document.createElement("input");
     element1.type = "text";
-    element1.id = "toxicity";
+    element1.id = "toxicity1";
     cell1.appendChild(element1);
 
     var cell2 = row.insertCell(1);
@@ -654,7 +654,7 @@ function addRow() {
     cell2.width = "250";
     var element2 = document.createElement("input");
     element2.type = "text";
-    element2.id = "grade";
+    element2.id = "grade1";
     element2.style = "width:250px";
     cell2.appendChild(element2);
 
@@ -662,23 +662,23 @@ function addRow() {
     cell3.style = "border: 1px solid black";
     var element3 = document.createElement("input");
     element3.type = "text";
-    element3.id = "frequency";
+    element3.id = "frequency1";
     cell3.appendChild(element3);
 
     var cell4 = row.insertCell(3);
     cell4.style = "border: 1px solid black";
     var element4 = document.createElement("input");
     element4.type = "text";
-    element4.id = "death";
+    element4.id = "death1";
     cell4.appendChild(element4);
 
     var cell5 = row.insertCell(4);
     cell5.style = "border: 1px solid black";
     var element5 = document.createElement("input");
     element5.type = "text";
-    element5.id = "withdrawal";
+    element5.id = "withdrawal1";
     cell5.appendChild(element5);
-};
+};*/
 
 
 
@@ -695,16 +695,16 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
             if (items[i].type == "input") { 
 
                 out += "&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
-                out += "<input style='width:150px; height:30px;' type='text' id='"+items[i].id+"'>";
+                out += "<input style='width:150px; height:20px;' type='text' id='"+items[i].id+"'>";
 
             }
 
-            else if (items[i].type == "button") {
+            //else if (items[i].type == "button") {
               
-              out += "<button onclick='addRow();' style='float: right; width:80px; height:30px;' id= "+ items[i].id + ">" + items[i].name + "</button> </br>";
+              //out += "<button onclick='addRow();' style='float: right; width:20px; height:10px;' id= "+ items[i].id + ">" + items[i].name + "</button> </br>";
 
               
-            }
+           // }
 
             else {
 
