@@ -97,6 +97,14 @@
 	background-color: #d1d1d1;
 }
 
+/*#mp-data-form-toxicity div{
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 25px;
+	display: none;
+	overflow-y: scroll;
+}*/
+
 #quotearea p{
 	font-size: 13px !important;
 }

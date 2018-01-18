@@ -680,6 +680,9 @@ Handlebars.registerHelper('buildFormParticipantsData', function(items, options) 
     cell5.appendChild(element5);
 };*/
 
+function scrollfunction() {
+    document.getElementById("mp-data-form-toxicity").innerHTML;
+};
 
 
 
@@ -708,7 +711,7 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
 
             else {
 
-                out += "<table id ='toxicity-tab' align = 'center' style = 'border-collapse: collapse; border: 1px solid black;'>";
+                out += "<table id ='toxicity-tab' style = 'border-collapse: collapse; border: 1px solid black; overflow:scroll;'>";
 
                 out += "<col width = '100'>" + "<col width = '250'>" + "<col width = '100'>" + "<col width = '100'>" +"<col width = '100'>";
 

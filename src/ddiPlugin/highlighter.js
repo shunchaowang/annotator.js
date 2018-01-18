@@ -239,13 +239,13 @@ ddiHighlighter.prototype.draw = function (annotation, pageNumber) {
             for (var idx = 0; idx < dataL.length; idx++) {
                 var data = dataL[idx];
 
-                if (data.auc.ranges != null || data.auc.hasTarget != null) 
-                    self.drawField(data.auc, "auc", idx, dataRangesL, hldivL, pageNumber);     
-                if (data.cmax.ranges != null || data.cmax.hasTarget != null) 
-                    self.drawField(data.cmax, "cmax", idx, dataRangesL, hldivL, pageNumber);                
-                if (data.clearance.ranges != null || data.clearance.hasTarget != null)
-                    self.drawField(data.clearance, "clearance", idx, dataRangesL, hldivL, pageNumber);                
-                if (data.halflife.ranges != null || data.halflife.hasTarget !=null) 
+                if (data.radiotherapy.ranges != null || data.radiotherapy.hasTarget != null) 
+                    self.drawField(data.radiotherapy, "radiotherapy", idx, dataRangesL, hldivL, pageNumber);     
+                if (data.toxicity.ranges != null || data.toxicity.hasTarget != null) 
+                    self.drawField(data.toxicity, "toxicity", idx, dataRangesL, hldivL, pageNumber);                
+                if (data.deathwithdrawal.ranges != null || data.deathwithdrawal.hasTarget != null)
+                    self.drawField(data.deathwithdrawal, "deathwithdrawal", idx, dataRangesL, hldivL, pageNumber);                
+                /*if (data.halflife.ranges != null || data.halflife.hasTarget !=null) 
                     self.drawField(data.halflife, "halflife", idx, dataRangesL, hldivL, pageNumber);                                
                 if (data.cellSystem != null && (data.cellSystem.ranges != null || data.cellSystem.hasTarget !=null)) 
                     self.drawField(data.cellSystem, "cellSystem", idx, dataRangesL, hldivL, pageNumber);
@@ -260,7 +260,7 @@ ddiHighlighter.prototype.draw = function (annotation, pageNumber) {
                         if (data.measurement[mType] != null && (data.measurement[mType].ranges != null || data.measurement[mType].hasTarget !=null)) 
                             self.drawField(data.measurement[mType], mType, idx, dataRangesL, hldivL, pageNumber);
                     }
-                }
+                }*/
 
                 // draw MP Material
                 var material = data.supportsBy.supportsBy;
@@ -273,8 +273,8 @@ ddiHighlighter.prototype.draw = function (annotation, pageNumber) {
                         self.drawField(material.drug1Dose, "dose1", idx, dataRangesL, hldivL, pageNumber);                    
                     if (material.drug2Dose.ranges != null || material.drug2Dose.hasTarget != null) 
                         self.drawField(material.drug2Dose, "dose2", idx, dataRangesL, hldivL, pageNumber);                    
-                    if (material.phenotype.ranges != null || material.phenotype.hasTarget != null) 
-                        self.drawField(material.phenotype, "phenotype", idx, dataRangesL, hldivL, pageNumber);                    
+                    //if (material.phenotype.ranges != null || material.phenotype.hasTarget != null) 
+                        //self.drawField(material.phenotype, "phenotype", idx, dataRangesL, hldivL, pageNumber);                    
                 }
             }
         }
