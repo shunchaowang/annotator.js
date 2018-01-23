@@ -679,12 +679,12 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                         // mpData toxicity
 
 
-                        var toxicitytoxicityCriteria = $('#toxicityCriteria').val();
-                        var toxicityToxicity = $('#toxicity').val();
-                        var toxicityGrade = $('#grade').val();
-                        var toxicityFrequency = $('#frequency').val();
-                        var toxicityDeath = $('#death').val();
-                        var toxicityWithdrawal = $('#withdrawal').val();
+                        var toxicitytoxicityCriteria = $('#toxicityCriteria').map(function(){return $(this).val();}).get();
+                        var toxicityToxicity = $('#toxicity').map(function(){return $(this).val();}).get();
+                        var toxicityGrade = $('#grade').map(function(){return $(this).val();}).get();
+                        var toxicityFrequency = $('#frequency').map(function(){return $(this).val();}).get();
+                        var toxicityDeath = $('#death').map(function(){return $(this).val();}).get();
+                        var toxicityWithdrawal = $('#withdrawal').map(function(){return $(this).val();}).get();
 
                         if (toxicitytoxicityCriteria != "" && toxicityToxicity != "" && toxicityGrade != "" && toxicityFrequency != "" && toxicityDeath != "" && toxicityWithdrawal != "") {
 
@@ -1677,8 +1677,8 @@ function loadDataItemFromAnnotation(loadData, allHighlightedDrug) {
     $('#participantsFemale').val(loadData.supportsBy.supportsBy.participants.female);
     $('#participantsRace').val(loadData.supportsBy.supportsBy.participants.race);
     $('#participantsMedianAge').val(loadData.supportsBy.supportsBy.participants.medianAge);
-    $('#participantsTumorType').text(loadData.supportsBy.supportsBy.participants.tumorType);
-    $('#participantsCancerStage').text(loadData.supportsBy.supportsBy.participants.cancerStage);
+    $('#participantsTumorType').val(loadData.supportsBy.supportsBy.participants.tumorType);
+    $('#participantsCancerStage').val(loadData.supportsBy.supportsBy.participants.cancerStage);
 
     if (loadData.supportsBy.supportsBy.participants.hasTarget != null) {
         $('#participantsquote').html(loadData.supportsBy.supportsBy.participants.hasTarget.hasSelector.exact || '');
@@ -1766,17 +1766,19 @@ function loadDataItemFromAnnotation(loadData, allHighlightedDrug) {
 
     // load toxicity Data
 
-    $('#toxicityCriteria').text(loadData.toxicity.toxicityCriteria);
-    $('#toxicity').text(loadData.toxicity.Toxicity);
-    $('#grade').text(loadData.toxicity.grade);
+    $('#toxicityCriteria').val(loadData.toxicity.toxicityCriteria);
+    $('#toxicity').val(loadData.toxicity.Toxicity);
+    $('#grade').val(loadData.toxicity.grade);
     $('#frequency').val(loadData.toxicity.frequency);
     $('#death').val(loadData.toxicity.death);
     $('#withdrawal').val(loadData.toxicity.withdrawal);
-    $('#toxicity1').text(loadData.toxicity.Toxicity);
-    $('#grade1').text(loadData.toxicity.grade);
-    $('#frequency1').val(loadData.toxicity.frequency);
-    $('#death1').val(loadData.toxicity.death);
-    $('#withdrawal').val(loadData.toxicity.withdrawal);
+
+    /*$('#toxicityCriteria').val(loadData.toxicity.toxicityCriteria);
+    $('#toxicity').map(function(){return $(this).val(loadData.toxicity.Toxicity);});
+    $('#grade').map(function(){return $(this).val(loadData.toxicity.grade);});
+    $('#frequency').map(function(){return $(this).val(loadData.toxicity.frequency);});
+    $('#death').map(function(){return $(this).val(loadData.toxicity.death);});
+    $('#withdrawal').map(function(){return $(this).val(loadData.toxicity.Toxicity);});*/
 
     if (loadData.toxicity.hasTarget != null) {
         $('#toxicityquote').html(loadData.toxicity.hasTarget.hasSelector.exact || '');
@@ -2232,7 +2234,7 @@ function cleanDataForm() {
     //clean form validation format
     $(".form-validation-alert").hide();
 
-    var allDataFields = ["#participants", "#participantsTotal", "#participantsMale", "#participantsFemale", "#participantsRace", "#participantsMedianAge", "#participantsTumorType", "#participantsCancerStage", "#drug1Dose", "#drug1Duration", "#drug1Formulation", "#drug1Regimens", "#drug1ToleratedDose", "#drug2Dose", "#drug2Duration", "#drug2Formulation", "#drug2Regimens", "#drug2ToleratedDose", "#radiotherapy", "#toxicityCriteria", "#toxicity", "#grade", "#frequency", "#death", "#withdrawal", "#toxicity1", "#grade1", "#frequency1", "#death1", "#withdrawal1", "#deathFrequency", "#withdrawalFrequency"];
+    var allDataFields = ["#participants", "#participantsTotal", "#participantsMale", "#participantsFemale", "#participantsRace", "#participantsMedianAge", "#participantsTumorType", "#participantsCancerStage", "#drug1Dose", "#drug1Duration", "#drug1Formulation", "#drug1Regimens", "#drug1ToleratedDose", "#drug2Dose", "#drug2Duration", "#drug2Formulation", "#drug2Regimens", "#drug2ToleratedDose", "#radiotherapy", "#toxicityCriteria", "#toxicity", "#grade", "#frequency", "#death", "#withdrawal", "#deathFrequency", "#withdrawalFrequency"];
     for (var i = 0; i < allDataFields.length; i++) {
         $(allDataFields[i]).css("background-color", "");
     }
@@ -2244,8 +2246,8 @@ function cleanDataForm() {
     $('#participantsFemale').val('');
     $('#participantsRace').val('');
     $('#participantsMedianAge').val('');
-    $('#participantsTumorType').text('');
-    $('#participantsCancerStage').text('');
+    $('#participantsTumorType').val('');
+    $('#participantsCancerStage').val('');
     $("#drug1Dose").val('');
     $("#drug1Duration").val('');
     $("#drug1Formulation")[0].selectedIndex = -1;
@@ -2262,18 +2264,26 @@ function cleanDataForm() {
 
     $("#radiotherapy")[0].selectedIndex = -1;
 
-    $('#toxicityCriteria').text('');
-    $('#toxicity').text('');
-    $('#grade').text('');
+    $('#toxicityCriteria').val('');
+    //$('#toxicity').val('');
+    $("#toxicity").each(function(index, tr) {
+        $('toxicity', tr).map(function(index, td) {
+            return $(this).val();
+        });
+    });
+    $("#toxicity").map(function(){return $(this).val('');});
+    $('#grade').val('');
+    //$("#grade")
+    //.map(function(){return $(this).val('');}).get();
     $('#frequency').val('');
+    //$("#frequency")
+   // .map(function(){return $(this).val('');}).get();
     $('#death').val('');
+    //$("#death")
+    //.map(function(){return $(this).val('');}).get();
     $('#withdrawal').val('');
-    $('#toxicityCriteria').text('');
-    $('#toxicity1').text('');
-    $('#grade1').text('');
-    $('#frequency1').val('');
-    $('#death1').val('');
-    $('#withdrawal1').val('');
+    //$("#withdrawal")
+    //.map(function(){return $(this).val('');}).get();
 
 
     $('#deathFrequency').val('');

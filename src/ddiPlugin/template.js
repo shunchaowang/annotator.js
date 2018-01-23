@@ -243,11 +243,17 @@ var context6 = {
         name: "Toxicity criteria: ",
         id: "toxicityCriteria"
     },
-    /*{
+    {
         type: "button",
         name: "add",
         id: "toxicityTable"
-    },*/
+    },
+    {
+        type:"theader",
+        name:"select",
+        id:"select-row",
+        html:"table"
+    },
     {
         type:"theader",
         name:"Toxicity",
@@ -282,6 +288,11 @@ var context6 = {
         type:"space",
         html: "table",
         name:""
+    },
+    {
+        input:"checkbox",
+        id:"record",
+        html:"table"
     },
     {
         input:"text",
@@ -678,13 +689,27 @@ Handlebars.registerHelper('buildFormParticipantsData', function(items, options) 
     element5.type = "text";
     element5.id = "withdrawal1";
     cell5.appendChild(element5);
-};*/
+};
 
 function scrollfunction() {
     document.getElementById("mp-data-form-toxicity").innerHTML;
-};
+};*/
 
 
+$(document).ready(function(){
+    $(".add-row").click(function(){
+        //var markup = "<tr><td style = 'border: 1px solid black;'><input type='text' id='toxicity'>" + "</td>" + "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='frequency'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='death'>" + "</td>"+"<td style = 'border: 1px solid black;'><input type='text' id='withdrawal'>" + "</td></tr>"
+        var markup = "<tr id = 'toxicity-data'><td style = 'border: 1px solid black;'><input type='checkbox' id='record'></td><td style = 'border: 1px solid black;'><input type='text' id='toxicity'>" + "</td>" + "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='frequency'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='death'>" + "</td>"+"<td style = 'border: 1px solid black;'><input type='text' id='withdrawal'>" + "</td></tr>"
+        $("#toxicity-tab").append(markup);
+    });
+    $(".delete-row").click(function(){
+            $("#toxicity-tab").find('input[id="record"]').each(function(){
+                if($(this).is(":checked")){
+                    $(this).parents("tr").remove();
+                }
+            });
+    });
+});
 
 
 Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
@@ -702,12 +727,15 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
 
             }
 
-            //else if (items[i].type == "button") {
-              
-              //out += "<button onclick='addRow();' style='float: right; width:20px; height:10px;' id= "+ items[i].id + ">" + items[i].name + "</button> </br>";
+            else if (items[i].type == "button") {
 
+                out += "<input type = 'button' class = 'delete-row' value = 'Delete Row' style='float: right; width:80px; height:20px;'> </input>";
+                out += "<input type = 'button' class = 'add-row' value = 'Add Row' style='float: right; width:80px; height:20px;'> </input>";
+                
               
-           // }
+              //out += "<button class='add-row' style='float: right; width:40px; height:10px;' id= "+ items[i].id + ">" + items[i].name + "</button> </br>";
+             
+           }
 
             else {
 
@@ -719,7 +747,7 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
 
                     if (items[i].html == "table") {
 
-                        if (((i)%8==0))
+                        if (((i)%9==0))
 
                             out = out + "<tr>";
 
@@ -729,11 +757,16 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
                             //out += "<td><input type='text' id='"+items[i].id+"'>" + "</td>";
 
                         }
-                        if(((i+1)%8==0))
+                        if(((i+1)%9==0))
                             out = out + "</tr>";
 
-                        if(((i-1)%7==6))
+                        if(((i-1)%7==1))
                            out = out + "<tr id = 'toxicity-data'>";
+
+                        if (items[i].input == "checkbox") {
+
+                            out += "<td style = 'border: 1px solid black;'><input type='checkbox' id='"+items[i].id+"'>" + "</td>";
+                        }
 
                         if (items[i].input == "text") {
 
@@ -749,7 +782,7 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
 
 
                         }
-                        if(((i)%7==0))
+                        if(((i)%8==0))
                             out = out + "</tr>";
 
                         

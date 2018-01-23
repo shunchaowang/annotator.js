@@ -75,6 +75,12 @@
 /* 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4DFFFF0A, endColorstr=#4DFFFF0A)";  /\* 0.3 == 4D in MS filters *\/ */
 /* } */
 
+#mp-data-form-toxicity {
+	max-height: 130px;
+    max-width: 1250px;
+	overflow-y:scroll;
+}
+
 .claimquoteborder {
 	clear: both;
 	position:relative;
@@ -89,9 +95,9 @@
 .dataquoteborder {
 	clear: both;
 	position:relative;
-	max-height: 70px;
+	max-height: 50px;
 	margin-bottom: 1px;
-    max-width: 1200px;
+    max-width: 1250px;
 	overflow-y:scroll;
 	margin-left: -25px;
 	background-color: #d1d1d1;
