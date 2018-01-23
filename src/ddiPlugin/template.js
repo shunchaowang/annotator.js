@@ -699,11 +699,41 @@ function scrollfunction() {
 $(document).ready(function(){
     $(".add-row").click(function(){
         //var markup = "<tr><td style = 'border: 1px solid black;'><input type='text' id='toxicity'>" + "</td>" + "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='frequency'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='death'>" + "</td>"+"<td style = 'border: 1px solid black;'><input type='text' id='withdrawal'>" + "</td></tr>"
-        var markup = "<tr id = 'toxicity-data'><td style = 'border: 1px solid black;'><input type='checkbox' id='record'></td><td style = 'border: 1px solid black;'><input type='text' id='toxicity'>" + "</td>" + "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='frequency'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='death'>" + "</td>"+"<td style = 'border: 1px solid black;'><input type='text' id='withdrawal'>" + "</td></tr>"
-        $("#toxicity-tab").append(markup);
+        var count = document.getElementById("toxicity-tab").getElementsByTagName("tr").length;
+        var tr = $("<tr>");
+        var tdRecord = $("<td>", {style: "border: 1px solid black;"});
+        var checkboxRecord = $("<input>", {type: "checkbox", id: "record" + count});
+        tdRecord.append(checkboxRecord);
+        tr.append(tdRecord);
+        var tdToxicity = $("<td>", {style: "border: 1px solid black;"});
+        var textToxicity = $("<input>", {type: "text", id: "toxicity" + count});
+        tdToxicity.append(textToxicity);
+        tr.append(tdToxicity);
+
+        var tdGrade = $("<td>", {style: "border: 1px solid black; width:250px;"});
+        var textGrade = $("<input>", {type: "text", id: "grade" + count});
+        tdGrade.append(textGrade);
+        tr.append(tdGrade);
+
+        var tdFrequency = $("<td>", {style: "border: 1px solid black;"});
+        var textFrequency = $("<input>", {type: "text", id: "frequency" + count});
+        tdFrequency.append(textFrequency);
+        tr.append(tdFrequency);
+        var tdDeath = $("<td>", {style: "border: 1px solid black;"});
+        var textDeath = $("<input>", {type: "text", id: "death" + count});
+        tdDeath.append(textDeath);
+        tr.append(tdDeath);
+        var tdWithdrawal = $("<td>", {style: "border: 1px solid black;"});
+        var textWithdrawal = $("<input>", {type: "text", id: "withdrawal" + count});
+        tdWithdrawal.append(textWithdrawal);
+        tr.append(tdWithdrawal);
+        //var markup = "<tr id = 'toxicity-data'><td style = 'border: 1px solid black;'><input type='checkbox' id='record'></td><td style = 'border: 1px solid black;'><input type='text' id='toxicity'>" + "</td>" + "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='frequency'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='death'>" + "</td>"+"<td style = 'border: 1px solid black;'><input type='text' id='withdrawal'>" + "</td></tr>"
+        //$("#toxicity-tab").append(markup);
+        $("#toxicity-tab").append(tr);
+
     });
     $(".delete-row").click(function(){
-            $("#toxicity-tab").find('input[id="record"]').each(function(){
+            $("#toxicity-tab").find('input[id^="record"]').each(function(){
                 if($(this).is(":checked")){
                     $(this).parents("tr").remove();
                 }
