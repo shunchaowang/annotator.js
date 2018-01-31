@@ -1144,9 +1144,9 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
         
         if (method == 'DDI clinical trial' || method == 'Phenotype clinical study' || method == 'Case Report' || method == 'Experiment' || method == 'Statement') {
             if (relationship == 'Toxicity' || relationship == 'inhibits' || relationship == 'substrate of' || relationship == 'has metabolite of' || relationship == 'controls formation of' || relationship == 'inhibition constant') {
-               if (!this._isListboxFilled($('#Drug1')[0], true))
+               if (!this._isListboxFilled($('#Drug1')[0], true)
                 valid =false;
-            }  
+            }
         }
         
         /*if (method == 'Statement') {

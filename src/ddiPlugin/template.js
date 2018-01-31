@@ -318,6 +318,41 @@ var context6 = {
         input:"text",
         id:"withdrawal",
         html:"table"
+    },
+    {
+        type:"space",
+        html: "table",
+        name:""
+    },
+    {
+        input:"checkbox",
+        id:"record3",
+        html:"table"
+    },
+    {
+        input:"text",
+        id:"toxicity3",
+        html:"table"
+    },
+    {
+        input:"text",
+        id:"grade3",
+        html:"table"
+    },
+    {
+        input:"text",
+        id:"frequency3",
+        html:"table"
+    },
+    {
+        input:"text",
+        id:"death3",
+        html:"table"
+    },
+    {
+        input:"text",
+        id:"withdrawal3 ",
+        html:"table"
     }
 
     ]
@@ -696,7 +731,8 @@ function scrollfunction() {
 };*/
 
 
-$(document).ready(function(){
+/*$(document).ready(function(){
+var toxicityData = new Object();
     $(".add-row").click(function(){
         //var markup = "<tr><td style = 'border: 1px solid black;'><input type='text' id='toxicity'>" + "</td>" + "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='frequency'>" + "</td>" + "<td style = 'border: 1px solid black;'><input type='text' id='death'>" + "</td>"+"<td style = 'border: 1px solid black;'><input type='text' id='withdrawal'>" + "</td></tr>"
         var count = document.getElementById("toxicity-tab").getElementsByTagName("tr").length;
@@ -710,8 +746,8 @@ $(document).ready(function(){
         tdToxicity.append(textToxicity);
         tr.append(tdToxicity);
 
-        var tdGrade = $("<td>", {style: "border: 1px solid black; width:250px;"});
-        var textGrade = $("<input>", {type: "text", id: "grade" + count});
+        var tdGrade = $("<td>", {style: "border: 1px solid black;"});
+        var textGrade = $("<input>", {style: "width: 250px;", type: "text", id: "grade" + count});
         tdGrade.append(textGrade);
         tr.append(tdGrade);
 
@@ -739,10 +775,10 @@ $(document).ready(function(){
                 }
             });
     });
-});
+});*/
 
 
-Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
+/*Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
     var out = "";
     for(var i=0, l=items.length; i<l; i++) {
         if (items[i].type == "quote") {
@@ -808,11 +844,34 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
                                 out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='"+items[i].id+"'>" + "</td>";
                             }
 
-                          
-
-
                         }
                         if(((i)%8==0))
+                            out = out + "</tr>";
+
+                        if (((i+1)%8==0))
+                            out = out + "<tr id = 'toxicity-data1'>";
+                        if (items[i].input == "checkbox") {
+
+                            out += "<td style = 'border: 1px solid black;'><input type='checkbox' id='"+items[i].id+"'>" + "</td>";
+                        }
+
+                        if (items[i].input == "text") {
+
+                            if (items[i].id != "grade") {
+
+                                out += "<td style = 'border: 1px solid black;'><input type='text' id='"+items[i].id+"'>" + "</td>";
+                            } else if (items[i].id == "grade") {
+
+                                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='"+items[i].id+"'>" + "</td>";
+                            }
+
+                        }
+
+                        /*if (items[i].input == "hidden") {
+                                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='hidden' id='"+items[i].id+"'>" + "</td>";
+
+                        }*/
+                        /*if(((i)%23==0))
                             out = out + "</tr>";
 
                         
@@ -829,8 +888,225 @@ Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
 
     return out;
 
-});
+});*/
 
+/*Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
+    var out = "";
+    for(var i=0, l=items.length; i<l; i++) {
+        if (items[i].type == "quote") {
+            out += "<div id='" + items[i].id + "' class='dataquoteborder'></div>";
+        }
+        else {
+
+            if (items[i].type == "input") { 
+
+                out += "&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                out += "<input style='width:150px; height:20px;' type='text' id='"+items[i].id+"'>";
+
+            }
+
+            else if (items[i].type == "button") {
+
+                out += "<input type = 'button' class = 'delete-row' value = 'Delete Row' style='float: right; width:80px; height:20px;'> </input>";
+                out += "<input type = 'button' class = 'add-row' value = 'Add Row' style='float: right; width:80px; height:20px;'> </input>";
+                
+              
+              //out += "<button class='add-row' style='float: right; width:40px; height:10px;' id= "+ items[i].id + ">" + items[i].name + "</button> </br>";
+             
+           }
+           else {
+
+                out += "<table id ='toxicity-tab' style = 'border-collapse: collapse; border: 1px solid black; overflow:scroll;'>";
+
+                out += "<col width = '100'>" + "<col width = '250'>" + "<col width = '100'>" + "<col width = '100'>" +"<col width = '100'>";
+
+                for (var i = 1, l=items.length; i<l; i++) {
+                    if (items[i].html == "table"){
+                        if (((i)%9==0))
+                          out += "<tr>";
+                        if (items[i].type == "theader") {
+                            out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong id ='"+ items[i].id +"-label'>" + items[i].name + "</strong></td>";      
+                        }
+                        if(((i+1)%9==0))
+                            out = out + "</tr>";
+
+                    }
+                    if (((i)%16==0))
+                        out = out + "<tr id = 'toxicity-data1'>";
+                        
+                        if (items[i].input == "checkbox") {
+
+                            out += "<td style = 'border: 1px solid black;'><input type='checkbox' id='"+items[i].id+"'>" + "</td>";
+                        }
+
+                        if (items[i].input == "text") {
+
+                            if (items[i].id != "grade") {
+
+                                out += "<td style = 'border: 1px solid black;'><input type='text' id='"+items[i].id+"'>" + "</td>";
+                            } else if (items[i].id == "grade") {
+
+                                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='"+items[i].id+"'>" + "</td>";
+                            }
+
+                        }
+                        if (((i+1)%16==0))
+                            out = out + "</tr>";
+
+
+                }
+                    /*if (items[i].html == "table") {
+
+                        if (((i)%9==0))
+
+                            out += "<tr>";
+                        out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong id ='select-row-label'>Select</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong id ='toxicity'>Toxicity</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong id ='grade'>Grade</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong id ='frequency'>Frequency</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong id ='death'>Death</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong id ='withdrawal'>Withdrawal</strong></td>";
+                out = out + "</tr>";*/
+                /*out += "</table>";
+
+            }
+        }
+    }
+    return out;
+});*/
+
+
+Handlebars.registerHelper('buildFormToxicityData', function(items, options) {
+    var out = "";
+
+    for(var i=0, l=items.length; i<l; i++) {
+        if (items[i].type == "quote") {
+            out += "<div id='" + items[i].id + "' class='dataquoteborder'></div>";
+        } else if (items[i].type == "input") { 
+
+                out += "&nbsp;&nbsp;<strong id='"+ items[i].id +"-label'>" + items[i].name +"</strong>";
+                out += "<input style='width:150px; height:30px;' type='text' id='"+items[i].id+"'>";
+
+            }
+        }
+
+    
+                
+                out += "</br></br><table id ='toxicity-tab' align = 'center' style = 'border-collapse: collapse; border: 1px solid black;'>";
+
+                out += "<col width = '10'>" + "<col width = '100'>" + "<col width = '250'>" + "<col width = '100'>" + "<col width = '100'>" +"<col width = '100'>";
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong>S.No.</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong>Toxicity</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong>Grade</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong>Frequency</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong>Death</strong></td>";
+                out += "<td style = 'border: 1px solid black; color: white;' bgcolor='LightGray;' align = 'center'><strong>Withdrawal</strong></td>";
+                out = out + "</tr>";
+
+            
+
+    
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>1</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity1'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade1'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency1'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death1'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal1'></td>";
+                out = out + "</tr>";
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>2</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity2'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade2'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency2'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death2'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal2'></td>";
+                out = out + "</tr>";
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>3</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity3'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade3'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency3'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death3'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal3'></td>";
+                out = out + "</tr>";
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>4</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity4'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade4'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency4'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death4'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal4'></td>";
+                out = out + "</tr>";
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>5</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity5'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade5'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency5'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death5'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal5'></td>";
+                out = out + "</tr>";
+
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>6</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity6'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade6'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency6'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death6'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal6'></td>";
+                out = out + "</tr>";
+
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>7</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity7'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade7'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency7'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death7'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal7'></td>";
+                out = out + "</tr>";
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>8</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity8'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade8'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency8'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death8'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal8'></td>";
+                out = out + "</tr>";
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>9</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity9'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade9'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency9'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death9'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal9'></td>";
+                out = out + "</tr>";
+
+                out = out + "<tr>";
+                out += "<td style = 'border: 1px solid black;' 'column-width: 50px;' align = 'center'><strong>10</strong></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='toxicity10'></td>";
+                out += "<td style = 'border: 1px solid black;'><input style = 'width:250px;' type='text' id='grade10'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='frequency10'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='death10'></td>";
+                out += "<td style = 'border: 1px solid black;'><input type='text' id='withdrawal10'></td>";
+                out = out + "</tr>";
+
+
+
+                out += "</table>";
+
+    return out;
+
+});
 // Claim
 var source = "{{#buildFormClaim questions}}{{/buildFormClaim}}";
 var template = Handlebars.compile(source);

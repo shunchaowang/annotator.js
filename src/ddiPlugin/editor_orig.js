@@ -264,11 +264,7 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                             isEnan = false;
                             isMeta = false;*/
 
-                if (claim.method == "Phenotype clinical study" || claim.method == "DDI clinical trial" || claim.method == "Case Report" || claim.method == "Statement" || claim.method == "Experiment") {
-                    (claim.qualifiedBy.relationship == "Toxicity" || claim.qualifiedBy.relationship == "inhibits" || claim.qualifiedBy.relationship == "substrate of" || claim.qualifiedBy.relationship == "has metabolite" || claim.qualifiedBy.relationship == "controls formation of" || claim.qualifiedBy.relationship == "inhibition constant");
-                }
-
-                /*if (claim.method == "Phenotype clinical study") {
+                if (claim.method == "Phenotype clinical study") {
                 //Method: (Phenotype: substrate of, inhibit)
 
                 if (claim.qualifiedBy.relationship == "inhibits" || claim.qualifiedBy.relationship == "substrate of") {
@@ -303,7 +299,7 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                                     $('input[name=negation][value=No]').prop('checked', true);*/
 
 
-               /* }*/ /*else if (claim.method == "DDI clinical trial") {
+               /* }*/ else if (claim.method == "DDI clinical trial") {
                 //Method: (DDI clinical trial: interact with, inhibits, substrate of)
 
                 if (claim.qualifiedBy.relationship == "inhibits" || claim.qualifiedBy.relationship == "substrate of") {
@@ -350,7 +346,7 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                 }
 
                             //parent compound
-                            /*if (!$('#drug2').parent().is(':hidden')) {
+                            if (!$('#drug2').parent().is(':hidden')) {
                                 if (drug2PC != null) {
                                     if (drug2PC.includes("|")) {
                                         isEnan = true;
@@ -367,10 +363,10 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                                 if (isMeta) {
                                     $('#drug2metabolite').prop('checked', true);
                                 }
-                            }*/
+                            }
                         }
 
-            //loadRjectedFieldsForClaim(annotation.rejected);
+            loadRjectedFieldsForClaim(annotation.rejected);
 
                     } else { // if editing data, then update claim label and drug names to data fields nav
                         //extract highlight drug from text
@@ -389,13 +385,8 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                             // clean material : participants, dose1, dose2...
                             cleanDataForm();
                             //Load data form
-                            if (annotation.argues.method == "DDI clinical trial" || annotation.argues.method == "Phenotype clinical study" || annotation.argues.method == "Case Report" || annotation.argues.method == "Statement" || annotation.argues.method == "Experiment") {
-                                loadDataItemFromAnnotation(loadData, allHighlightedDrug);
-                            }
-                            
-                            /*if (annotation.argues.method == "Experiment") {
-                                loadDataItemFromAnnotation(loadData, allHighlightedDrug);
-                                //loadExperimentFromAnnotation(loadData, annotation.argues.qualifiedBy.relationship);
+                            if (annotation.argues.method == "Experiment") {
+                                loadExperimentFromAnnotation(loadData, annotation.argues.qualifiedBy.relationship);
                             } else if (annotation.argues.method != "Case Report") {
                                 loadDataItemFromAnnotation(loadData, allHighlightedDrug);
                             } else {
@@ -404,24 +395,24 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                                 } else {
                                     $("#author-total").val('NA');
                                 }
-                            }*/
+                            }
 
-                            var drug1doseLabel = claim.qualifiedBy.drug1 + " Dose : ";
-                            var drug2doseLabel = claim.qualifiedBy.drug2 + " Dose : ";
+                            var drug1doseLabel = claim.qualifiedBy.drug1 + " Dose in MG: ";
+                            var drug2doseLabel = claim.qualifiedBy.drug2 + " Dose in MG: ";
 
-                            /*if (claim.qualifiedBy.relationship == "interact with") {
+                            if (claim.qualifiedBy.relationship == "interact with") {
                                 if (claim.qualifiedBy.precipitant == "drug1")
                                     drug1doseLabel += " (precipitant)";
                                 else if (claim.qualifiedBy.precipitant == "drug2")
                                     drug2doseLabel += " (precipitant)";
-                            }*/
+                            }
 
                             $("#drug1-dose-switch-btn").html(drug1doseLabel);
                             $("#drug2-dose-switch-btn").html(drug2doseLabel);
                             $("#drug1Dose-label").html(drug1doseLabel);
                             $("#drug2Dose-label").html(drug2doseLabel);
                             $("#claim-label-data-editor").html("<strong>Claim: </strong>" + claim.label.replace(/\_/g,' '));
-                            //loadUnchangedMode();
+                            loadUnchangedMode();
                             postDataForm(currFormType);
                         }
 
@@ -459,12 +450,12 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                                 allrelationOfDose.push(relationOfDose);
                             }
                         } else {
-                            var qualifiedBy = {drug1 : "", drug2 : "", relationship : "" }; //enzyme : "", precipitant : ""};
+                            var qualifiedBy = {drug1 : "", drug2 : "", relationship : "", enzyme : "", precipitant : ""};
             }
                         qualifiedBy.relationship = $('#relationship option:selected').text();
 
                         //parent compound - drug1
-                        /*var isEnantiomer = $('#drug1enantiomer').is(':checked');
+                        var isEnantiomer = $('#drug1enantiomer').is(':checked');
                         var isMetabolite = $('#drug1metabolite').is(':checked');
                         if (isEnantiomer && isMetabolite) {
                             qualifiedBy.drug1PC = "enantiomer|metabolite";
@@ -474,17 +465,11 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                             qualifiedBy.drug1PC = "enantiomer";
                         } else {
                             qualifiedBy.drug1PC = "";
-                        }*/
+                        }
 
             // TODO: refactoring by method/relationship
             // single drug
-                        if ((qualifiedBy.relationship == "Toxicity" || qualifiedBy.relationship == "inhibits" || qualifiedBy.relationship == "substrate of" || qualifiedBy.relationship == "has metabolite" || qualifiedBy.relationship == "controls formation of" || qualifiedBy.relationship == "inhibition constant") && (method == "DDI clinical trial" || method == "Phenotype clinical study" || method == "Case Report" || method == "Experiment")) {
-                            qualifiedBy.drug1 = $('#Drug1 option:selected').text();
-                            qualifiedBy.drug2 = $('#Drug2 option:selected').text();
-                            qualifiedBy.drug1ID = $('#Drug1 option:selected').val();
-                            qualifiedBy.drug2ID = $('#Drug2 option:selected').val();
-                        }
-                        /*if ((qualifiedBy.relationship == "inhibits" || qualifiedBy.relationship == "substrate of") && (method == "Phenotype clinical study" || method == "Statement")) {
+                        if ((qualifiedBy.relationship == "inhibits" || qualifiedBy.relationship == "substrate of") && (method == "Phenotype clinical study" || method == "Statement")) {
                             qualifiedBy.drug1 = $('#Drug1 option:selected').text();
                             qualifiedBy.drug1ID = $('#Drug1 option:selected').val();
                             qualifiedBy.drug2 = "";
@@ -508,11 +493,11 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                             } else {
                                 qualifiedBy.drug2PC = "";
                             }
-                        }*/
+                        }
 
                         //Method: Statement, DDI clinical trial, Phenotype clinical study, Case Report, Experiment
             var relation = qualifiedBy.relationship;
-            /*if (method == "Statement") {
+            if (method == "Statement") {
                 // statement negation
                             var negationVal = $("input[name=negation]:checked").val();
                             annotation.argues.negation = negationVal;
@@ -540,7 +525,7 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
                 }
                             qualifiedBy.precipitant = $("input[name=precipitant]:checked").val();
                             qualifiedBy.objectMetabolite = $('#object-metabolite option:selected').text();
-            }*/
+            }
 
 
                         //relation of drug and drugDose
@@ -1141,15 +1126,8 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
     if (currFormType == 'claim') { // validate claim form
             var method = $('#method option:selected').text();
             var relationship = $('#relationship option:selected').text();
-        
-        if (method == 'DDI clinical trial' || method == 'Phenotype clinical study' || method == 'Case Report' || method == 'Experiment' || method == 'Statement') {
-            if (relationship == 'Toxicity' || relationship == 'inhibits' || relationship == 'substrate of' || relationship == 'has metabolite of' || relationship == 'controls formation of' || relationship == 'inhibition constant') {
-               if (!this._isListboxFilled($('#Drug1')[0], true))
-                valid =false;
-            }  
-        }
-        
-        /*if (method == 'Statement') {
+
+        if (method == 'Statement') {
         if (relationship == 'interact with') {
             if ((!this._isListboxFilled($('#Drug1')[0], true)) || (!this._isListboxFilled($('#Drug2')[0], true)) || (!this._isRatioButtonFilled('precipitant')))
             valid = false;
@@ -1185,7 +1163,7 @@ var ddiEditor = exports.ddiEditor = Widget.extend({
             if ((!this._isListboxFilled($('#Drug1')[0], true)) || (!this._isListboxFilled($('#enzyme')[0], false)))
             valid = false;
         }
-        }*/
+        }
     } else { //validate data form
             var fields = $("#mp-data-form-" + currFormType).children();
             //data form validation rule
@@ -1596,7 +1574,7 @@ var mover = exports.mover = function mover(element, handle) {
 
 
 //load dips from annotation
-/*function loadDipsFromAnnotation(loadData) {
+function loadDipsFromAnnotation(loadData) {
     //1.load reviewer info
     if (loadData.reviewer != undefined && loadData.reviewer.length != 0) {
         var reviewerTmp = loadData.reviewer;
@@ -1674,10 +1652,10 @@ var mover = exports.mover = function mover(element, handle) {
             }
         }
     }
-}*/
+}
 
 // load one experiment item from mp annotation
-/*function loadExperimentFromAnnotation(loadData, relationship) {
+function loadExperimentFromAnnotation(loadData, relationship) {
     //change "precipitant" or "inhibit" based on relationship
     if (relationship == "inhibits") {
         $('#nav-rateWith-btn').text("Metabolite Rate With Precipitant");
@@ -1778,7 +1756,7 @@ var mover = exports.mover = function mover(element, handle) {
             if (this.value === annotation.argues.method) $(this).prop('selected', true);
         });
     }
-}*/
+}
 
 // load one data item from mp annotation
 
